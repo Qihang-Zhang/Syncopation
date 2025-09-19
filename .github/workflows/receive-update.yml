@@ -38,7 +38,7 @@ jobs:
           SYNC_SOURCE_DIR: ${{ github.event.client_payload.source_dir }}
           SYNC_TARGET_DIR: ${{ github.event.client_payload.target_dir }}
           # 传入读取中心仓库所需的 token
-          CORE_REPO_TOKEN: ${{ secrets.CORE_REPO_READ_TOKEN }}
+          CORE_REPO_TOKEN: ${{ secrets.POLYRHYTHM_READ_TOKEN }}
         run: |
           bash ./central-logic/scripts/sync-files.sh
 
