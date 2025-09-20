@@ -7,3 +7,6 @@ site_url: https://qihang-zhang.github.io/Syncopation
 plugins:
   blog:
     blog_dir: Syncopation
+
+theme:
+  custom_dir: overrides
