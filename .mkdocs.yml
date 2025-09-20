@@ -10,3 +10,4 @@ plugins:
 
 theme:
   custom_dir: overrides
+  
