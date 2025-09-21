@@ -1,0 +1,20 @@
+INHERIT: ./customized_mkdocs/base_mkdocs.yml
+
+site_name: Syncopation
+
+site_url: https://qihang-zhang.github.io/Syncopation
+
+plugins:
+  blog:
+    blog_dir: Syncopation
+
+theme:
+  custom_dir: overrides
+
+# Comments used to test Github Actions
+nav: 
+  - index.md
+  - Syncopation: 
+    - index: Syncopation/index.md
+  - Slides: 
+    - index: Slides/index.md
