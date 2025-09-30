@@ -29,15 +29,25 @@ jobs:
           token: ${{ secrets.POLYRHYTHM_READ_TOKEN }} # need a PAT to read the central private repo
           path: './central-logic' # download the central repo logic to this subdirectory
 
-      # step 3: run the sync script, and pass the payload parameters through env
+      # step 3: prepare env for batch or single mode based on payload
+      - name: Prepare sync env (batch-aware)
+        run: |
+          set -euo pipefail
+          pairs=$(jq -c '.client_payload? // {} | .pairs // empty' "$GITHUB_EVENT_PATH" || true)
+          if [ -n "$pairs" ]; then
+            echo "Detected batch payload with pairs"
+            echo "SYNC_PAIRS_JSON=$pairs" >> "$GITHUB_ENV"
+          else
+            echo "Batch payload not found; falling back to single mapping"
+            echo "SYNC_SOURCE_DIR=${{ github.event.client_payload.source_dir }}" >> "$GITHUB_ENV"
+            echo "SYNC_TARGET_DIR=${{ github.event.client_payload.target_dir }}" >> "$GITHUB_ENV"
+          fi
+
+      # step 4: run the sync script
       - name: Run Sync Script
         env:
-          # read the parameters from the payload of the dispatch event, and set them as environment variables
           SYNC_SOURCE_REPO: ${{ github.event.client_payload.source_repo }}
           SYNC_SOURCE_REF: ${{ github.event.client_payload.source_ref }}
-          SYNC_SOURCE_DIR: ${{ github.event.client_payload.source_dir }}
-          SYNC_TARGET_DIR: ${{ github.event.client_payload.target_dir }}
-          # pass the token to read the central repo
           CORE_REPO_TOKEN: ${{ secrets.POLYRHYTHM_READ_TOKEN }}
         run: |
           bash ./central-logic/scripts/sync-files.sh
