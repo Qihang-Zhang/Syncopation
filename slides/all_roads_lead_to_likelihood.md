@@ -1,5 +1,5 @@
 ---
-title: "All Roads Lead to Likelihood:"
+title: "All Roads Lead to Likelihood"
 ---
 # All Roads Lead to Likelihood
 
