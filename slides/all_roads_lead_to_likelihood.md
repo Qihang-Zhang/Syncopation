@@ -62,6 +62,7 @@ Why do we still need to train a Reward Model when doing RLHF **Even after we hav
 Notes: 
 
 The paper does not explicitly describe the general knowledge of RM, but for all experiments in the paper, RM is obtained by using the same SFT model with the final softmax layer removed and replaced with a linear layer. Therefore, their general knowledge comes from the same SFT model, and their preference knowledge comes from the existing Human Preference dataset.
+
 ---
 
 ## H2: Failure of Offline PFT Regularization to $\pi_{ref}$
@@ -120,6 +121,41 @@ Counter-Evidence: In the carefully controlled experiments, both online and offli
 Notes:
 The new dataset is derived from the SFT dataset, resampled, and scored using RM.
 ---
+## Global And Local Reward Model:
+
+<div class="fragment">
+
+#### Global Reward Model: The Usual Reward Model In RLHF
+
+$$
+r(\xi,s_0) := r(a _{0:h}, s_0) \Big| \\; s_0 \sim \rho_0, \\; r \in \mathcal{R}
+$$
+
+</div>
+
+<div class="fragment">
+
+#### Local Reward Model: An Explicit Expression Of Reward Derived From DPO
+
+$$
+\mathcal{R}(\Pi) = \Big\\{ r_\pi(\xi \mid s_0) := \sum_{h=0}^{H} \log \pi(a_h \mid a _{0:h-1}, s_0) \Big| \pi \in \Pi, \\;  s_0 \sim \rho_0 \Big\\}
+$$
+
+</div>
+
+<div class = "fragment" style="text-align: center;">
+
+where $\Pi$ is the set of all possible policies, $\mathcal{R}(\Pi) \iff \Pi$
+
+</div>
+
+
+Notes: 
+### Pronounciation
+- The pronunciation of $\xi$ is "ksee" - IPA /ksi/
+- $\iff$ is pronounced as "equivalent to"
+
+---
 
 ## H4: Global RMs Can Be Trained on More Data
 
@@ -142,6 +178,7 @@ It is narrow because all responses come from the same SFT model and are judged b
 However, On.DPO (DPO) (orange bars, two columns on the right) still shows improved performance, even exceeding On.DPO (SFT). This suggests that even with a narrow data source, online iteration can still lead to improvements.
 
 This contradicts the prediction of H4 (that the RM advantage depends on data breadth). If the RM advantage lies in data breadth, then this advantage should disappear when the data is narrow.
+
 ---
 
 ## H5: Global RMs Generalize Better OOD
@@ -196,6 +233,7 @@ Global RM: Accepts the entire sequence as input and outputs a score.
 Local RM: Sum the log-probabilities of each token in the generated sequence.
 Experiment 7: Likelihood is similar to accuracy; higher is better.
 Experiment 8: Use off-line DPO and SFT, then use RM to score the best of N and compare with GPT 4o.
+
 ---
 
 ## All Roads Lead to Likelihood
@@ -217,6 +255,7 @@ Experiment 8: Use off-line DPO and SFT, then use RM to score the best of N and c
 - Propose **Hypothesis 6:** The Generation-Verification Gap & Proper Policy Learning
 
 </div>
+
 ---
 
 ## The Equivalences Between DPO and RM
@@ -413,6 +452,7 @@ The Optimization Objectives are Equivalent under the Assumption: $\mathcal{R}(\P
 <p align="center" style="margin-top: 0;">
   <img src="https://img.qihang-zhang.com/2025/10/cf0765296560027ed13e4318fa26209f.png" alt="figs/pythia_tword.png" style="max-width: 40%; height: auto;" />
 </p>
+
 ---
 
 ## H6 Exps: Exp 2 - Harder Verification
@@ -424,6 +464,7 @@ The Optimization Objectives are Equivalent under the Assumption: $\mathcal{R}(\P
 <p align="center" style="margin-top: 0;">
   <img src="https://img.qihang-zhang.com/2025/10/b1bff3d9d9077a658f48c3ed2a270674.png" alt="figs/pythia_rouge.png" style="max-width: 40%; height: auto;" />
 </p>
+
 ---
 
 # Thanks For Listening!
