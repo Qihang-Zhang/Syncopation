@@ -22,4 +22,4 @@
 	</body>
 </html>
 
-Hi, this is [Qihang](https://qihang-zhang.com)👋. I’m documenting my learning process here. This blog will cover anything I am interested in.
+Hi, this is [Qihang](https://qihang-zhang.com)👋. I’m documenting my learning process here. This note will cover anything I am interested in.
