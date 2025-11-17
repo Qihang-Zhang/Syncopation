@@ -444,7 +444,7 @@ uv run -m examples.prep_submission_kaggle \
 ## Citation Requirements
 
 ### You MUST Cite
-- Every dataset, paper, blog post, code snippet
+- Every paper, blog post, code snippet
 - AI-assisted coding (e.g., ChatGPT, Copilot)
   - Include prompt-response summaries in appendix
   - Mention in main text
