@@ -29,6 +29,8 @@ title: "CPEN455 - Few-Shot Learning for Spam Detection"
 
 **Dataset**: Email classification (spam vs. not spam)
 
+**Note**: The main examples are based on Bayesian inverse classification, but you are encouraged to explore any methods you are interested in
+
 ---
 
 ## Learning Objectives
@@ -44,14 +46,14 @@ By completing this project, you are expected to:
 
 ## Quick Start Checklist
 
-**1.Install UV Package Manager**
+**1. Install UV Package Manager**
 
 ```bash
 # Visit: https://docs.astral.sh/uv/getting-started/installation/
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**2.Install Dependencies**
+**2. Install Dependencies**
 
 ```bash
 uv sync
@@ -61,7 +63,7 @@ uv sync
 
 ## Quick Start Checklist (cont.)
 
-**3.Clone Autograder**
+**3. Clone Autograder**
 
 ```bash
 git clone git@github.com:DSL-Lab/CPEN455-Project-2025W1-Autograder.git autograder
@@ -69,7 +71,7 @@ git clone git@github.com:DSL-Lab/CPEN455-Project-2025W1-Autograder.git autograde
 
 :warning: **Windows users**: Clone first, then rename to `autograder`
 
-**4.Verify Dataset**
+**4. Verify Dataset**
 
 Confirm datasets exist under:
 ```
@@ -80,14 +82,14 @@ autograder/cpen455_released_datasets/
 
 ## Running Examples
 
-**1.Chatbot Example**
+**1. Chatbot Example**
 
 ```bash
 uv run -m examples.chatbot_example
 ```
 Experiment with different prompts to see text generation capabilities.
 
-**2.Bayes Inverse Zero Shot**
+**2. Bayes Inverse Zero Shot**
 ```bash
 bash examples/bayes_inverse_zero_shot.sh
 ```
@@ -97,13 +99,13 @@ Baseline evaluation without extra training.
 
 ## Running Examples (cont.)
 
-**3.Bayes Inverse Naive Prompting**
+**3. Bayes Inverse Naive Prompting**
 ```bash
 bash examples/bayes_inverse_naive_prompting.sh
 ```
 Inject richer prompts at inference time.
 
-**4.Bayes Inverse Full Finetune**
+**4. Bayes Inverse Full Finetune**
 ```bash
 bash examples/bayes_inverse_full_finetune.sh
 ```
@@ -128,7 +130,6 @@ $$P(Y|X) = \frac{P(X,Y)}{P(X)} = \frac{P(X|Y) \cdot P(Y)}{\displaystyle\sum_{Y \
 ## Bayesian Inverse Classification (cont.)
 
 ### LLM Application
-<!-- TODO: make it can use a new line in the current env -->
 
 $$
 P_\theta(Y_\text{label}|X_{\leq i}) = \frac{P_{\theta}(X_{\leq i},Y_\text{label})}{P_{\theta}(X_{\leq i})}
@@ -145,12 +146,13 @@ $$
 
 ### Key Components
 
-- $X_{\leq i}$: Input sequence (email content)
+- $X_{\leq i}$: Input sequence up to position $i$ (email content)
 - $Y_\text{label}$: Label (spam or not spam)
 - $\theta$: Pre-trained language model parameters
-- $P_\theta(Y_\text{label}|X_{\leq i})$: Posterior probability
-- $P_\theta(X_{\leq i}|Y_\text{label})$: Likelihood
-- $P_\theta(Y_\text{label})$: Prior probability
+- $P_\theta(Y_\text{label}|X_{\leq i})$: Posterior probability of label given input
+- $P_\theta(X_{\leq i}|Y_\text{label})$: Likelihood of input given label
+- $P_\theta(X_{\leq i},Y_\text{label})$: Joint probability of input and label
+- $P_\theta(Y_\text{label})$: Prior probability of label
 
 ---
 
@@ -319,6 +321,7 @@ Each example worth 10% (5% for running, 5% for report):
 
 ### Leaderboard Competition: **30%**
 - Relative ranking: $(1 - \frac{N}{\text{Total Students}}) \times 30$%
+- Based on autograder results, not Kaggle!
 
 ---
 
@@ -339,12 +342,12 @@ Each example worth 10% (5% for running, 5% for report):
 
 ## Kaggle Submission
 
-**1.Generate probabilities:**
+**1. Generate probabilities:**
 ```bash
 uv run -m examples.save_prob_example
 ```
 
-**2.Create Kaggle submission:**
+**2. Create Kaggle submission:**
 ```bash
 uv run -m examples.prep_submission_kaggle \
   --input bayes_inverse_probs/test_dataset_probs.csv \
@@ -358,10 +361,10 @@ uv run -m examples.prep_submission_kaggle \
 ## Kaggle Notes
 
 - **10 submissions per day limit**
-- Public leaderboard: 70% of test data
+- Public leaderboard: 70% of test data (public split)
 - Final ranking: 100% of test data (revealed after deadline)
 - Leaderboard is for reference only
-- **Grading uses autograder results, not Kaggle!**
+- **Grading uses autograder results (`bash autograder/auto_grader.sh`), not Kaggle!**
 
 ---
 
@@ -374,7 +377,7 @@ uv run -m examples.prep_submission_kaggle \
 4. **Interface**: `examples/save_prob_example.py` must work
 
 ### :warning: Critical Files
-- Keep exactly ONE checkpoint file
+- Keep only necessary checkpoint files
 - Ensure `bash autograder/auto_grader.sh` runs successfully
 - Report must be named `report.pdf` in root directory
 
@@ -386,9 +389,10 @@ uv run -m examples.prep_submission_kaggle \
 - NeurIPS conference style
 - Maximum 4 pages (excluding references/appendices)
 - PDF format
+- Lengthy ≠ good; focus on coding, report is technical companion
 
 ### Suggested Structure
-1. **Method** - Description, equations, figures
+1. **Method** - Description, equations, figures (create your own!)
 2. **Experiments** - Results, ablations, analysis
 3. **Conclusion** - Findings, limitations, future work
 
@@ -397,31 +401,45 @@ uv run -m examples.prep_submission_kaggle \
 ## Report Content Tips
 
 ### Method Section
-- Include a figure to explain your method (create yourself!)
-- Use equations rigorously
+- Include a figure illustrating main computation graph (create yourself!)
+- Use equations rigorously and concisely
+- Algorithm box recommended for complex methods
+
+---
+
+## Report Content Tips
 
 ### Experiments Section
+Include at least one of:
 - Ablation studies on design choices
 - Training methods and special techniques
-- Quantitative AND qualitative analysis
+- Both quantitative AND qualitative analysis
 - Compare different approaches
 
 ---
 
 ## Other Methods to Explore
 
-### Parameter-Efficient Fine-Tuning
-- **Prefix-Tuning**: Train only prefix tokens
-- **LoRA**: Low-rank adaptation of weights
+### Constraints
+:warning: **Directly using** other powerful LLMs to classify emails **is NOT allowed**. Must use provided codebase and pre-trained models.
 
+:white_check_mark: Using pre-trained models to synthesize data for augmentation **is allowed**.
+
+### Parameter-Efficient Fine-Tuning
+- **Prefix-Tuning**: Train only prefix tokens ([arXiv:2101.00190](https://arxiv.org/abs/2101.00190))
+- **LoRA**: Low-rank adaptation of weights ([arXiv:2106.09685](https://arxiv.org/abs/2106.09685))
+
+---
+
+## Other Methods to Explore
 ### Data Augmentation
-- **Data Synthesis**: Generate synthetic spam/non-spam emails
+**Generate synthetic spam/non-spam emails:**
 - Use powerful LLMs to augment training data
 
-### Advanced Techniques
-- **Ensemble Methods**: Combine multiple models
-- **Prompt Engineering**: Advanced prompting strategies
-- **Chain-of-Thought**: Multi-step reasoning
+### Ensemble Methods
+**Combine multiple models:**
+  - [Model weight fusion](https://arxiv.org/abs/2203.05482)
+  - [Weighted Product of Experts](https://qihang-zhang.com/Learning-Sys-Blog/2025/10/15/weighted-product-of-experts.html)
 
 ---
 
@@ -431,20 +449,22 @@ uv run -m examples.prep_submission_kaggle \
 - Use PyTorch functions
 - Consult external resources (with citation)
 - Use AI tools (with disclosure)
+- Use pre-trained models for data synthesis
 
 ### :x: Violations (= ZERO grade)
 - Code reuse without citation
 - AI code generation without acknowledgment
-- Manipulating test dataset for labels
+- Manipulating test dataset to extract labels
 - Fabricated results
 - Sharing code/checkpoints with others
+- Extensive reuse without proper attribution
 
 ---
 
 ## Citation Requirements
 
 ### You MUST Cite
-- Every paper, blog post, code snippet
+- Every paper, blog post, code snippet used
 - AI-assisted coding (e.g., ChatGPT, Copilot)
   - Include prompt-response summaries in appendix
   - Mention in main text
@@ -455,20 +475,18 @@ uv run -m examples.prep_submission_kaggle \
 
 ---
 
-## Critical Warnings
+## :no_entry: DO NOT
 
-### :no_entry: DO NOT
 1. Change any code in `autograder/` folder
-   - We use original code for grading
+   - We use original git clone for grading
    - Changes may break grading → ZERO score
 
 2. Include multiple checkpoint files
-   - We cannot guarantee checking all
-   - Include ONLY your best model
+   - Keep only ONE (unless using ensemble/LoRA)
+   - We cannot guarantee checking all, so include ONLY your best model
 
 3. Forget to test autograder before submission
-   - Run `bash autograder/auto_grader.sh`
-   - Verify it completes successfully
+   - Run `bash autograder/auto_grader.sh` and verify it completes
 
 ---
 
